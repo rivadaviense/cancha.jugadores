@@ -1,0 +1,102 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: rgb(196, 221, 244);
+    user-select: none;
+}
+
+/* Estilo del header */
+.top-header {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center; /* Centra el contenido horizontalmente */
+    align-items: center; /* Centra el contenido verticalmente */
+    width: 100%; /* Ocupa todo el ancho del contenedor */
+    padding: 20px;
+}
+
+/* Estilo del contenedor de la imagen */
+.tier {
+    position: relative; /* Permite posicionar elementos hijos absolutamente */
+    width: 100%; /* Asegúrate de que el contenedor tenga el tamaño correcto */
+    height: 500px; /* Ajusta la altura según el tamaño de la cancha */
+    overflow: hidden; /* Oculta cualquier contenido que se salga del contenedor */
+}
+
+/* Estilo de la imagen */
+.tier img {
+    position: absolute; /* Posiciona las imágenes de forma absoluta dentro del contenedor */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ajusta el tamaño de la imagen para cubrir el contenedor sin distorsionar */
+}
+
+.main {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente si el contenedor padre tiene altura definida */
+    margin-bottom: 30px;
+}
+
+/* Asegura que el botón esté centrado y tenga un estilo apropiado */
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0; /* Ajusta el margen según sea necesario */
+}
+
+.canvas-draw {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none; /* Desactiva los eventos del mouse cuando no se está dibujando */
+    border: 1px solid rgba(0, 0, 0, 0.5); /* Opcional: borde visible para el canvas */
+}
+
+.boton-escribir.active {
+    background-color: #d3d3d3; /* Opcional: estilo para indicar que el botón está activo */
+}
+
+
+.contenedor-jugadores {
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    background-color: blanchedalmond;
+    border: 1px solid black;
+    width: 80%;
+    height: 100px;
+    padding: 20px;
+    position: relative; /* Permite a los jugadores posicionarse correctamente */
+}
+
+.jugadores {
+    height: 50px;
+    width: 50px;
+    cursor: move;
+    object-fit: contain; /* Asegura que la imagen mantenga su relación de aspecto */
+}
+
+#cancha .jugadores {
+    height: 80px;
+    width: 80px;
+    position: absolute; /* Permite que los jugadores se posicionen absolutamente dentro de la cancha */
+    object-fit: contain; /* Evita la deformación de las imágenes */
+}
+
+
+.canvas-draw {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Evita que el canvas interfiera con el arrastre de los jugadores */
+    z-index: 1;
+}
