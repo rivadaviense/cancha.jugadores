@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,9 +15,22 @@
         
         <div class="parent-container">
            <div class="button-container">
+            
+                <label class="boton-agregar-jugador">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-user-plus">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+                            <path d="M16 19h6" />
+                            <path d="M19 16v6" />
+                            <path d="M6 21v-2a4 4 0 0 1 4 -4h4" />
+                        </svg>
+                        <input multiple accept="image/*" id="image-input" type="file" hidden> 
+                </label>
+                           
+            <button id="nombre" class="agregar-nombre"><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-abc"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 16v-6a2 2 0 1 1 4 0v6" /><path d="M3 13h4" /><path d="M10 8v6a2 2 0 1 0 4 0v-1a2 2 0 1 0 -4 0v1" /><path d="M20.732 12a2 2 0 0 0 -3.732 1v1a2 2 0 0 0 3.726 1.01" /></svg></button>
             <button id="escribir" class="boton-escribir"><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-pencil"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" /><path d="M13.5 6.5l4 4" /></svg></button>
-            <button id="borar" class="boton-borrar" ><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-restore"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3.06 13a9 9 0 1 0 .49 -4.087" /><path d="M3 4.001v5h5" /><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg></button>
-            <button id="reset-cancha" ><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-soccer-field"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M3 9h3v6h-3z" /><path d="M18 9h3v6h-3z" /><path d="M3 5m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z" /><path d="M12 5l0 14" /></svg></svg></button>
+            <button id="borar" class="boton-borrar" ><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-eraser"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19 20h-10.5l-4.21 -4.3a1 1 0 0 1 0 -1.41l10 -10a1 1 0 0 1 1.41 0l5 5a1 1 0 0 1 0 1.41l-9.2 9.3" /><path d="M18 13.3l-6.3 -6.3" /></svg></button>
+            <button id="reset-cancha" class="boton-reset-cancha"><svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-trash"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 7l16 0" /><path d="M10 11l0 6" /><path d="M14 11l0 6" /><path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" /><path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" /></svg></button>
            </div>
         </div>
 
@@ -25,22 +38,12 @@
 
         <main class="main">
             <section class="contenedor-jugadores">
-                <img id="jugador1" src="./imagenes/1549-echeverri_653x667.png" alt="Jugador 1" class="jugadores" draggable="true" ondragstart="drag(event)">
-                <img id="jugador2" src="./imagenes/1230-casco_653x667.png" alt="Jugador 1" class="jugadores" draggable="true" ondragstart="drag(event)">
-                <img id="jugador3" src="./imagenes/1638-armani_653x667.png" alt="Jugador 1" class="jugadores" draggable="true" ondragstart="drag(event)">
-                <img id="jugador4" src="./imagenes/1760-paulo_653x667 (1).png" alt="Jugador 1" class="jugadores" draggable="true" ondragstart="drag(event)">
-                <img id="jugador5" src="./imagenes/1835-enzodiaz_653x667.png" alt="Jugador 1" class="jugadores" draggable="true" ondragstart="drag(event)">
-                <img id="jugador6" src="./imagenes/1830-aliendro_653x667.png" alt="Jugador 1" class="jugadores" draggable="true" ondragstart="drag(event)">
-                <img id="jugador7" src="./imagenes/pezzella_653x667.png" alt="Jugador 1" class="jugadores" draggable="true" ondragstart="drag(event)">
-                <img id="jugador8" src="./imagenes/kranevitter_653x667.png" alt="Jugador 1" class="jugadores" draggable="true" ondragstart="drag(event)">
-                <img id="jugador9" src="./imagenes/1832-solari_653x667.png" alt="Jugador 1" class="jugadores" draggable="true" ondragstart="drag(event)">
-                <img id="jugador10" src="./imagenes/mastantuono_653x667.png" alt="Jugador 1" class="jugadores" draggable="true" ondragstart="drag(event)">
-                <img id="jugador11" src="./imagenes/bareiro_653x667.png" alt="Jugador 1" class="jugadores" draggable="true" ondragstart="drag(event)">
+                
             </section>
         </main>
 
 
-    <script src="./main.js"></script>
+    <script src="./main.js" type="module"></script>
 </body>
 </html>
     

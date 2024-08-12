@@ -3,18 +3,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const escribirBtn = document.getElementById('escribir');
     const borrarBtn = document.getElementById('borar');
     const resetBtn = document.getElementById('reset-cancha');
+    const nombreBtn = document.getElementById('nombre');
     const contenedorJugadores = document.querySelector('.contenedor-jugadores');
+    const imageInput = document.getElementById('image-input');
+    
     let isDrawing = false;
     let isDrawingEnabled = false;
+    let isNamingEnabled = false;
     const originalPositions = {};
 
-    // Crear el elemento canvas para dibujar
     const canvas = document.createElement('canvas');
     canvas.classList.add('canvas-draw');
     cancha.appendChild(canvas);
     const ctx = canvas.getContext('2d');
 
-    // Ajustar tamaño del canvas para que coincida con el tamaño de la cancha
     function resizeCanvas() {
         canvas.width = cancha.clientWidth;
         canvas.height = cancha.clientHeight;
@@ -22,35 +24,26 @@ document.addEventListener('DOMContentLoaded', () => {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Función para inicializar las posiciones originales de los jugadores
     function initializeOriginalPositions() {
         const jugadores = document.querySelectorAll('.jugadores');
         jugadores.forEach(jugador => {
             const rect = jugador.getBoundingClientRect();
             originalPositions[jugador.id] = {
-                parent: jugador.parentElement,
+                parent: contenedorJugadores,
                 left: jugador.offsetLeft,
                 top: jugador.offsetTop
             };
         });
     }
 
-    // Función para restablecer los jugadores a sus posiciones originales
     function resetCancha() {
         const jugadores = document.querySelectorAll('.jugadores');
         jugadores.forEach(jugador => {
-            const position = originalPositions[jugador.id];
-            if (position) {
-                jugador.style.position = '';
-                jugador.style.left = `${position.left}px`;
-                jugador.style.top = `${position.top}px`;
-                position.parent.appendChild(jugador);
-            }
+            resetPlayerPosition(jugador);
         });
         clearCanvas();
     }
 
-    // Iniciar dibujo
     function startDrawing(e) {
         if (isDrawingEnabled) {
             isDrawing = true;
@@ -59,51 +52,44 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Dibujar en el canvas
     function draw(e) {
         if (!isDrawing || !isDrawingEnabled) return;
         ctx.lineTo(e.offsetX, e.offsetY);
         ctx.stroke();
     }
 
-    // Finalizar dibujo
     function stopDrawing() {
         isDrawing = false;
         ctx.closePath();
     }
 
-    // Activar o desactivar el modo de dibujo
     function toggleDrawing() {
         isDrawingEnabled = !isDrawingEnabled;
         if (isDrawingEnabled) {
-            canvas.style.pointerEvents = 'auto'; // Activar el canvas para dibujar
+            canvas.style.pointerEvents = 'auto';
             escribirBtn.classList.add('active');
-            cancha.style.pointerEvents = 'none'; // Desactivar eventos en la cancha
+            cancha.style.pointerEvents = 'none';
         } else {
-            canvas.style.pointerEvents = 'none'; // Desactivar el canvas para dibujar
+            canvas.style.pointerEvents = 'none';
             escribirBtn.classList.remove('active');
-            cancha.style.pointerEvents = 'auto'; // Reactivar eventos en la cancha
+            cancha.style.pointerEvents = 'auto';
         }
     }
 
-    // Borrar todo el contenido del canvas
     function clearCanvas() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
 
-    // Permitir el drop sobre la cancha y el contenedor de jugadores
     function allowDrop(event) {
         event.preventDefault();
     }
 
-    // Iniciar el arrastre
     function drag(event) {
-        if (!isDrawingEnabled) {
+        if (!isDrawingEnabled && !isNamingEnabled) {
             event.dataTransfer.setData("text", event.target.id);
         }
     }
 
-    // Manejar el drop
     function drop(event) {
         event.preventDefault();
         if (isDrawingEnabled) return;
@@ -120,47 +106,164 @@ document.addEventListener('DOMContentLoaded', () => {
             draggedElement.style.left = `${dropX}px`;
             draggedElement.style.top = `${dropY}px`;
             cancha.appendChild(draggedElement);
-        } else {
+
+            const nombre = document.querySelector(`.nombre[data-id="${draggedElement.id}"]`);
+            if (nombre) {
+                nombre.style.display = 'block';
+                nombre.style.left = `${dropX + draggedElement.offsetWidth / 2}px`;
+                nombre.style.top = `${dropY + draggedElement.offsetHeight}px`;
+                cancha.appendChild(nombre);
+            }
+        } else if (contenedorJugadores.contains(event.target)) {
             resetPlayerPosition(draggedElement);
         }
     }
 
-    // Función para restablecer la posición de un jugador
     function resetPlayerPosition(player) {
         const position = originalPositions[player.id];
         if (position) {
             player.style.position = '';
-            player.style.left = `${position.left}px`;
-            player.style.top = `${position.top}px`;
+            player.style.left = '';
+            player.style.top = '';
             position.parent.appendChild(player);
+
+            const nombre = document.querySelector(`.nombre[data-id="${player.id}"]`);
+            if (nombre) {
+                nombre.style.display = 'none'; // Ocultar el nombre
+                position.parent.appendChild(nombre);
+            }
         }
     }
 
-    // Eventos
+    imageInput.addEventListener('change', (event) => {
+        const files = event.target.files;
+
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const reader = new FileReader();
+
+            reader.onload = (e) => {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.classList.add('jugadores');
+                img.draggable = true;
+                img.id = `jugador-${Date.now()}-${i}`;
+
+                contenedorJugadores.appendChild(img);
+                img.addEventListener('dragstart', drag);
+
+                originalPositions[img.id] = {
+                    parent: contenedorJugadores,
+                    left: img.offsetLeft,
+                    top: img.offsetTop
+                };
+
+                img.addEventListener('click', function () {
+                    if (isNamingEnabled) {
+                        addNameToPlayer(img);
+                    }
+                });
+            };
+
+            reader.readAsDataURL(file);
+        }
+    });
+
+    function addNameToPlayer(player) {
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.placeholder = 'Escribe el nombre';
+        input.classList.add('nombre-input');
+        input.style.position = 'absolute';
+        
+        const inputWidth = 150;
+        input.style.left = `${player.offsetLeft + (player.offsetWidth / 2) - (inputWidth / 2)}px`;
+        input.style.top = `${player.offsetTop + player.offsetHeight + 5}px`;
+        input.style.width = `${inputWidth}px`;
+        
+        input.addEventListener('blur', () => {
+            if (input.value.trim()) {
+                const name = document.createElement('div');
+                name.textContent = input.value;
+                name.classList.add('nombre');
+                name.style.position = 'absolute';
+                name.style.textAlign = 'center';
+                name.style.width = `${player.offsetWidth}px`;
+                name.style.left = `${player.offsetLeft + (player.offsetWidth / 2)}px`;
+                name.style.top = `${player.offsetTop + player.offsetHeight}px`;
+                name.dataset.id = player.id;
+
+                name.addEventListener('click', () => {
+                    const newInput = document.createElement('input');
+                    newInput.type = 'text';
+                    newInput.value = name.textContent;
+                    newInput.classList.add('nombre-input');
+                    newInput.style.position = 'absolute';
+                    newInput.style.width = `${inputWidth}px`;
+                    newInput.style.left = `${player.offsetLeft + (player.offsetWidth / 2) - (inputWidth / 2)}px`;
+                    newInput.style.top = `${player.offsetTop + player.offsetHeight + 5}px`;
+                    
+                    newInput.addEventListener('blur', () => {
+                        if (newInput.value.trim()) {
+                            name.textContent = newInput.value;
+                        }
+                        newInput.remove();
+                    });
+                    newInput.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') {
+                            newInput.blur();
+                        }
+                    });
+                    
+                    cancha.appendChild(newInput);
+                    newInput.focus();
+                    name.remove();
+                });
+
+                cancha.appendChild(name);
+
+                player.addEventListener('mousemove', () => {
+                    name.style.left = `${player.offsetLeft + (player.offsetWidth / 2)}px`;
+                    name.style.top = `${player.offsetTop + player.offsetHeight}px`;
+                });
+
+                // Ocultar el nombre si el jugador está en el contenedor de jugadores
+                if (contenedorJugadores.contains(player)) {
+                    name.style.display = 'none';
+                }
+            }
+            input.remove();
+        });
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                input.blur();
+            }
+        });
+
+        cancha.appendChild(input);
+        input.focus();
+    }
+
+    function toggleNaming() {
+        isNamingEnabled = !isNamingEnabled;
+        if (isNamingEnabled) {
+            nombreBtn.classList.add('active');
+        } else {
+            nombreBtn.classList.remove('active');
+        }
+    }
+
     escribirBtn.addEventListener('click', toggleDrawing);
     borrarBtn.addEventListener('click', clearCanvas);
     resetBtn.addEventListener('click', resetCancha);
+    nombreBtn.addEventListener('click', toggleNaming);
 
-    // Eventos del canvas
-    canvas.addEventListener('mousedown', startDrawing);
-    canvas.addEventListener('mousemove', draw);
-    canvas.addEventListener('mouseup', stopDrawing);
-    canvas.addEventListener('mouseleave', stopDrawing);
-
-    // Asignar las funciones a los eventos
     cancha.addEventListener('dragover', allowDrop);
     cancha.addEventListener('drop', drop);
     contenedorJugadores.addEventListener('dragover', allowDrop);
     contenedorJugadores.addEventListener('drop', drop);
-    document.body.addEventListener('dragover', allowDrop);
-    document.body.addEventListener('drop', drop);
 
-    // Asignar la función drag a todos los elementos arrastrables
-    const draggableElements = document.querySelectorAll('.jugadores');
-    draggableElements.forEach(elem => {
-        elem.addEventListener('dragstart', drag);
-    });
-
-    // Inicializar posiciones originales al cargar
-    initializeOriginalPositions();
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDrawing);
 });

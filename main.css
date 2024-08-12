@@ -1,18 +1,19 @@
+/* Reseteo de márgenes y rellenos, y ajuste del box-sizing */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* Estilo del cuerpo */
 body {
     background-color: rgb(196, 221, 244);
-    user-select: none;
+    user-select: none; /* Evita la selección de texto */
 }
 
 /* Estilo del header */
 .top-header {
-    margin-top: 3px;
-    margin-bottom: 3px;
+    margin: 3px 0;
     display: flex;
     justify-content: center; /* Centra el contenido horizontalmente */
     align-items: center; /* Centra el contenido verticalmente */
@@ -22,29 +23,24 @@ body {
 
 /* Estilo del contenedor de la imagen */
 .tier {
-   
-    
     background-color: green;
     display: flex;
     justify-content: center; /* Centra el contenido horizontalmente */
     align-items: center; /* Centra el contenido verticalmente */
     position: relative; /* Permite posicionar elementos hijos absolutamente */
-    width: 700px; /* Asegúrate de que el contenedor tenga el tamaño correcto */
+    width: 700px; /* Tamaño del contenedor */
     height: 400px; /* Ajusta la altura según el tamaño de la cancha */
     overflow: hidden; /* Oculta cualquier contenido que se salga del contenedor */
 }
 
-/* Estilo de la imagen */
+/* Estilo de la imagen dentro del contenedor */
 .tier img {
-    
-    display: flex;
-    justify-content: center; /* Centra el contenido horizontalmente */
-    align-items: center; /* Centra el contenido verticalmente */
-    width: 670x; /* Reduce el ancho al 90% del contenedor */
-    height: 400px; /* Mantiene la relación de aspecto */
-   
+    max-width: 100%; /* Ajusta el ancho máximo al tamaño del contenedor */
+    max-height: 100%; /* Ajusta la altura máxima al tamaño del contenedor */
+    object-fit: contain; /* Mantiene la proporción de la imagen sin deformarla */
 }
 
+/* Contenedor principal */
 .parent-container {
     display: flex;
     justify-content: center;
@@ -52,96 +48,181 @@ body {
     width: 100%; /* Asegura que tenga suficiente espacio */
 }
 
+/* Contenedor de botones */
 .button-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 5px;
-    margin-bottom: 5px;
+    margin: 5px 0;
     background-color: blue;
     padding: 5px;
     width: 700px;
     gap: 5px;
 }
 
-
+/* Estilo principal */
 .main {
     display: flex;
     justify-content: center; /* Centra horizontalmente */
     align-items: center; /* Centra verticalmente si el contenedor padre tiene altura definida */
     margin-bottom: 10px;
-    
+    flex-wrap: wrap;
 }
 
-/* Asegura que el botón esté centrado y tenga un estilo apropiado */
-
-
-.canvas-draw {
-    position: absolute;
-    top: 0;
-    left: 0;
-    pointer-events: none; /* Desactiva los eventos del mouse cuando no se está dibujando */
-    border: 1px solid rgba(0, 0, 0, 0.5); /* Opcional: borde visible para el canvas */
-}
-
-.boton-escribir.active {
-    background-color: #d3d3d3; /* Opcional: estilo para indicar que el botón está activo */
-}
-
-
-.contenedor-jugadores {
-    display: flex;
-    justify-content: center; 
-    align-items: center; 
-    background-color: blanchedalmond;
-    border: 1px solid black;
-    width: 80%;
-    height: 100px;
-    padding: 20px;
-    position: relative; /* Permite a los jugadores posicionarse correctamente */
-}
-
-.jugadores {
-    height: 50px;
-    width: 50px;
-    cursor: move;
-    object-fit: contain; /* Asegura que la imagen mantenga su relación de aspecto */
-}
-
-#cancha .jugadores {
-    height: 80px;
-    width: 80px;
-    position: absolute; /* Permite que los jugadores se posicionen absolutamente dentro de la cancha */
-    object-fit: contain; /* Evita la deformación de las imágenes */
-}
-
-
-
-/* Estado por defecto: verde */
-.boton-escribir {
-    background-color: green;
-    color: white;
+/* Estilo del botón para agregar jugadores */
+.boton-agregar-jugador {
+    background-color: aliceblue;
+    color: blue;
     padding: 10px;
     border: none;
-    cursor: pointer;
-    border-radius: 5px; /* Opcional: redondea los bordes del botón */
+    border-radius: 5px; /* Redondea los bordes */
+    cursor: pointer; /* Cambia el cursor cuando pasa sobre el botón */
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* Estado activo: rojo */
-.boton-escribir.active {
-    background-color: red;
-   
+/* Estilo del botón para agregar nombre */
+.agregar-nombre {
+    background-color: #4CAF50; /* Verde cuando no está en uso */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
 }
 
+/* Estilo del botón para agregar nombre cuando está activo */
+.agregar-nombre.active {
+    background-color: #cc1515; /* Rojo cuando está en uso */
+}
+
+/* Estilo del botón para borrar */
+.boton-borrar {
+    background-color: aliceblue;
+    color: rgb(240, 11, 11);
+    padding: 10px;
+    border: none;
+    border-radius: 5px; /* Redondea los bordes */
+    cursor: pointer; /* Cambia el cursor cuando pasa sobre el botón */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Estilo del botón para resetear la cancha */
+.boton-reset-cancha {
+    background-color: aliceblue;
+    color: rgb(240, 11, 11);
+    padding: 10px;
+    border: none;
+    border-radius: 5px; /* Redondea los bordes */
+    cursor: pointer; /* Cambia el cursor cuando pasa sobre el botón */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Estilo del canvas para dibujo */
 .canvas-draw {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    pointer-events: none; /* Evita que el canvas interfiera con el arrastre de los jugadores */
+    pointer-events: none; /* Desactiva los eventos del mouse cuando no se está dibujando */
+    border: 1px solid rgba(0, 0, 0, 0.5); /* Borde visible para el canvas */
     z-index: 1;
+}
+
+/* Estilo para el botón de escritura cuando está activo */
+.boton-escribir.active {
+    background-color: #d3d3d3; /* Color cuando está activo */
+}
+
+/* Estilo del botón de escritura por defecto */
+.boton-escribir {
+    background-color: green;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px; /* Redondea los bordes */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Contenedor para el nombre */
+.nombre-container {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+/* Estilo del nombre */
+.nombre {
+    color: white;
+    font-size: 14px;
+    text-align: center;
+    width: 100%;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%); /* Centra el texto horizontal y verticalmente */
+    display: inline-flex; /* Ajusta el contenedor al contenido */
+    justify-content: center;
+    align-items: center;
+    background-color: #fffcfc; /* Fondo blanco */
+    color: black;
+    padding: 10px; /* Ajusta el padding para que el contenedor se agrande con el texto */
+    border-radius: 5px;
+    white-space: nowrap;
+    max-width: none; /* Permite que el contenedor se ajuste al contenido sin límite */
+    box-sizing: border-box; /* Incluye el padding en el cálculo del tamaño del contenedor */
+}
+
+/* Estilo del input para el nombre */
+.nombre-input {
+    position: absolute;
+    border: 1px solid #ccc;
+    padding: 5px;
+    background-color: #fff;
+    font-size: 14px;
+    z-index: 10;
+    box-sizing: border-box;
+}
+
+/* Contenedor para los jugadores */
+.contenedor-jugadores {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    max-width: 600px;
+}
+
+/* Estilo de los jugadores */
+.jugadores {
+    height: 50px;
+    width: 50px;
+    cursor: move;
+    object-fit: contain; /* Mantiene la proporción de la imagen */
+}
+
+/* Estilo de los jugadores en la cancha */
+#cancha .jugadores {
+    height: 80px;
+    width: 80px;
+    position: absolute; /* Permite que los jugadores se posicionen absolutamente dentro de la cancha */
+    object-fit: contain; /* Evita la deformación de las imágenes */
 }
