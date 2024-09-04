@@ -46,15 +46,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function startDrawing(e) {
         if (isDrawingEnabled) {
+            const x = e.touches ? e.touches[0].clientX - canvas.getBoundingClientRect().left : e.offsetX;
+            const y = e.touches ? e.touches[0].clientY - canvas.getBoundingClientRect().top : e.offsetY;
             isDrawing = true;
             ctx.beginPath();
-            ctx.moveTo(e.offsetX, e.offsetY);
+            ctx.moveTo(x, y);
         }
     }
 
     function draw(e) {
         if (!isDrawing || !isDrawingEnabled) return;
-        ctx.lineTo(e.offsetX, e.offsetY);
+        const x = e.touches ? e.touches[0].clientX - canvas.getBoundingClientRect().left : e.offsetX;
+        const y = e.touches ? e.touches[0].clientY - canvas.getBoundingClientRect().top : e.offsetY;
+        ctx.lineTo(x, y);
         ctx.stroke();
     }
 
@@ -99,8 +103,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (event.target === cancha || cancha.contains(event.target)) {
             const canchaRect = cancha.getBoundingClientRect();
-            const dropX = event.clientX - canchaRect.left - (draggedElement.offsetWidth / 2);
-            const dropY = event.clientY - canchaRect.top - (draggedElement.offsetHeight / 2);
+            const dropX = (event.touches ? event.touches[0].clientX : event.clientX) - canchaRect.left - (draggedElement.offsetWidth / 2);
+            const dropY = (event.touches ? event.touches[0].clientY : event.clientY) - canchaRect.top - (draggedElement.offsetHeight / 2);
 
             draggedElement.style.position = "absolute";
             draggedElement.style.left = `${dropX}px`;
@@ -263,6 +267,12 @@ document.addEventListener('DOMContentLoaded', () => {
     contenedorJugadores.addEventListener('dragover', allowDrop);
     contenedorJugadores.addEventListener('drop', drop);
 
+    // Eventos táctiles para el dibujo
+    canvas.addEventListener('touchstart', startDrawing);
+    canvas.addEventListener('touchmove', draw);
+    canvas.addEventListener('touchend', stopDrawing);
+
+    // Eventos de ratón para el dibujo
     canvas.addEventListener('mousedown', startDrawing);
     canvas.addEventListener('mousemove', draw);
     canvas.addEventListener('mouseup', stopDrawing);
